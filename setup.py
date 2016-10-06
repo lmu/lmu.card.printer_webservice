@@ -33,9 +33,12 @@ setup(name='lmu.pyramid.chipcard',
           'pyramid',
           'pyramid_chameleon',
           'pyramid_debugtoolbar',
+          'ZODB',
+          'pyramid_zodbconn',
+          'pyramid_tm',
           'waitress',
-          'Spyne==dev',
-          'suds-py3==dev',
+          'Spyne',
+          'suds-py3',
           'lxml',
           'ipython',
           'ipdb',
@@ -53,9 +56,9 @@ setup(name='lmu.pyramid.chipcard',
           ]
       },
       dependency_links=[
-          'https://github.com/cackharot/suds-py3.git#egg=suds-py3==dev',
-          'https://github.com/arskom/spyne.git=Spyne-dev'
-      ]
+          #'https://github.com/arskom/spyne.git#egg=Spyne-dev',
+          #'https://github.com/cackharot/suds-py3.git#egg=suds-py3-dev',
+      ],
       entry_points="""\
       [paste.app_factory]
       main = lmu.pyramid.chipcard:main
