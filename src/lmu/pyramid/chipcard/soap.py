@@ -83,24 +83,21 @@ class Person(ComplexModel):
 class Card(ComplexModel):
     __namespace__ = 'http://webcardmanagement.ana-u.com/'
     _type_info = {
-        'Validity': Date,
-        'Function': Unicode,
-        'SemesterTicket': Unicode,
+        'Gueltigkeit': Unicode,
+        'ExtendedCardData': AnyDict,
     }
-    Validity = Date
-    Function = Unicode
-    SemesterTicket = Unicode
+    Gueltigkeit = Unicode
+    ExtendedCardData = AnyDict
 
     def __init__(self, date, function, semester_ticket):
         if isinstance(date, datetime.date):
-            self.Validity = date
+            self.Gueltigkeit = date.isoformat()
         else:
-            self.Validity = datetime.date.today()
-        self.Function = function
-        if semester_ticket:
-            self.SemesterTicket = 'MVV'
-        else:
-            self.SemesterTicket = None
+            self.Gueltigkeit = datetime.date.today().isoformat()
+        self.ExtendedCardData = {
+            'Function': function,
+            'SemesterTicket': semester_ticket,
+        }
 
 
 class Picture(Unicode):
@@ -176,15 +173,15 @@ class AnaUSOAPWebService(ServiceBase):
         return Picture('Test')
 
     @srpc(Unicode, CardTypeEnum, Unicode, _returns=Boolean)
-    def SetPersonPhoto(SearchValue, CardType, Base64Photo):
-        log.info('Lookup "%s" on Card Type: "%s"', SearchValue, CardType)
+    def SetPersonPhoto(PersonIndentifier, CardType, Base64Photo):
+        log.info('Lookup "%s" on Card Type: "%s"', PersonIndentifier, CardType)
         if CardType == CardTypeEnum.STA:
             log.info('CardType is STA "%s"', CardType)
-            if SearchValue in STA.keys():
-                STA[SearchValue]['Photo'] = Base64Photo
+            if PersonIndentifier in STA.keys():
+                STA[PersonIndentifier]['Photo'] = Base64Photo
                 return True
             else:
-                log.warn('SearchValue %s not found.', SearchValue)
+                log.warn('PersonIndentifier %s not found.', PersonIndentifier)
                 #raise ResourceNotFoundError(fault_string='User / Card not known')
                 raise Fault('404', 'User / Card not known')
         elif CardType == CardTypeEnum.StudentID:
@@ -197,15 +194,19 @@ class AnaUSOAPWebService(ServiceBase):
 
     @srpc(Unicode, CardTypeEnum, AnyDict, _returns=Boolean)
     def SetCardData(PersonIdentifier, CardType, CardData):
+        log.info('Store Card Data Infos for: "%s" on "%s": "%s"', PersonIdentifier, CardType, CardData)
+        if not PersonIdentifier:
+            return False
         if CardType == CardTypeEnum.STA:
-            if PersonIdentifier in STA:
+            if PersonIdentifier in CARDS:
                 CARDS[PersonIdentifier]['CardType'] = CardType
             else:
                 CARDS[PersonIdentifier] = {
                     'CardType': CardType,
                 }
-            for key in CardData.keys():
-                CARDS[PersonIdentifier][key] = CardData[key]
+            if isinstance(CardData, dict):
+                for key in CardData.keys():
+                    CARDS[PersonIdentifier][key] = CardData[key]
             return True
         elif CardType == CardTypeEnum.StudentID:
             pass
@@ -215,8 +216,14 @@ class AnaUSOAPWebService(ServiceBase):
             pass
         return False
 
+    @srpc(Unicode, CardTypeEnum, _returns=AnyDict)
+    def GetCardData(PersonIdentifier, CardType):
+        log.info('Card Data Infos for: "%s" on "%s"', PersonIdentifier, CardType)
+        return CARDS.get(PersonIdentifier, dict())
+
     @srpc(Unicode, _returns=Iterable(Card))
     def GetValidationData(CardIdentifier):
+        log.info('Validation data for "%s"', CardIdentifier)
         date = datetime.date.today() + datetime.timedelta(days=365)
         function = 'DEMO-Card'
         return [Card(date=date, function=function, semester_ticket=False)]
