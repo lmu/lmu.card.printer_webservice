@@ -24,9 +24,13 @@
 /src/*.egg-info
 /var
 coverage.xml
+.coverage*
 docs/Makefile
 docs/doctrees
 docs/html
 docs/make.bat
 pip-selfcheck.json
 pyvenv.cfg
+.python-version
+Data.fs*
+external/
