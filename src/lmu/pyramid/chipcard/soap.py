@@ -89,15 +89,12 @@ class Card(ComplexModel):
     Gueltigkeit = Unicode
     ExtendedCardData = AnyDict
 
-    def __init__(self, date, function, semester_ticket):
+    def __init__(self, date, data):
         if isinstance(date, datetime.date):
             self.Gueltigkeit = date.isoformat()
         else:
             self.Gueltigkeit = datetime.date.today().isoformat()
-        self.ExtendedCardData = {
-            'Function': function,
-            'SemesterTicket': semester_ticket,
-        }
+        self.ExtendedCardData = data
 
 
 class Picture(Unicode):
@@ -223,7 +220,42 @@ class AnaUSOAPWebService(ServiceBase):
 
     @srpc(Unicode, _returns=Iterable(Card))
     def GetValidationData(CardIdentifier):
-        log.info('Validation data for "%s"', CardIdentifier)
-        date = datetime.date.today() + datetime.timedelta(days=365)
-        function = 'DEMO-Card'
-        return [Card(date=date, function=function, semester_ticket=False)]
+        date = datetime.date.today()
+        data = {}
+        if CardIdentifier == "000000791428":
+            date = datetime.date.today() + datetime.timedelta(days=365)
+            data = {
+                'functions': 'TRUE',
+                'function_title': 'Studiengang, Fach/FS (FKZ/ETCS) / Study, Topic, ETCS',
+                'function1': 'LA Gymnasium (modul.) Deutsch / 13 (U105)',
+                'function2': 'Englisch / 13 (U/105)',
+                'function3': 'Erziehungswiss. Studium / 13 (P/36)',
+                'function4': 'Sozialkunde / 9 (E)',
+                'function5': '',
+                'semesterticket_valid': 'TRUE',
+                'semesterticket_code': 'WS2016/17',
+                'TUM': 'False',
+                'valid': 'TRUE',
+            }
+        elif CardIdentifier == "000000399262":
+            date = datetime.date.today() + datetime.timedelta(days=365)
+            data = {
+                'functions': 'TRUE',
+                'function_title': 'Funktion / Function',
+                'function1': 'Referent IT-Projekte',
+                'function2': 'Dezernat VI - Informations- und Kommunikationstechnik',
+                'function3': 'Zentrale Universitätsverwaltung',
+                'function4': 'Martiusstraße 4 - Raum 404',
+                'function5': '+49 89 2180 9831',
+                'semesterticket_valid': 'TRUE',
+                'semesterticket_code': 'WS2016/17',
+                'TUM': 'False',
+                'valid': 'TRUE',
+            }
+        else:
+            data = {
+                'valid': 'FALSE',
+            }
+
+        log.info('Validation data for "%s": %s', CardIdentifier, data)
+        return [Card(date=date, data=data)]
