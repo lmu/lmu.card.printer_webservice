@@ -1,5 +1,5 @@
-lmu.ana-u_cardmanagement_webservice README
-==================
+lmu.card.printer_webservice README
+==================================
 
 Getting Started
 ---------------
@@ -9,4 +9,3 @@ Getting Started
 - $VENV/bin/pip install -e .
 
 - $VENV/bin/pserve development.ini
-
