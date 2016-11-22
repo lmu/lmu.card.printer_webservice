@@ -9,6 +9,7 @@
 /.project
 /.pydevproject
 /.tox
+/pyvenv.cfg
 /bin
 /build
 /develop-eggs
@@ -29,8 +30,7 @@ docs/Makefile
 docs/doctrees
 docs/html
 docs/make.bat
-pip-selfcheck.json
-pyvenv.cfg
+/pip-selfcheck.json
 .python-version
 Data.fs*
 external/
