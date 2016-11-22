@@ -37,6 +37,12 @@ STA = {
         'Born': datetime.date(year=1970, month=6, day=15),
         'ID_No': '1234567890',
         'Photo': image,
+    },
+    '10175648': {
+        'Name': 'Dr. rer pol Anna-Sophie Müller-Schmidt Gräfin von Musterburg zu Hohensee',
+        'Born': datetime.date(year=1987, month=9, day=23),
+        'ID_No': '10175648',
+        'Photo': image,
     }
 }
 
@@ -247,7 +253,7 @@ class AnaUSOAPWebService(ServiceBase):
                 'function3': 'Zentrale Universitätsverwaltung',
                 'function4': 'Martiusstraße 4 - Raum 404',
                 'function5': '+49 89 2180 9831',
-                'semesterticket_valid': 'TRUE',
+                'semesterticket_valid': 'FALSE',
                 'semesterticket_code': 'WS2016/17',
                 'TUM': 'False',
                 'valid': 'TRUE',
