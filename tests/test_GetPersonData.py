@@ -68,7 +68,7 @@ def pyramid_req():
 
 
 def test_GetPersonData(pyramid_req):
-    #from lmu.pyramid.chipcard.views import ana_u_webservice
+    #from lmu.card.printer_webservice.views import ana_u_webservice
     #response = ana_u_webservice(pyramid_req)
     #assert response == 'Hello World!'
     #req = requests.post(url, data=soap_request, headers=headers)

@@ -1,4 +1,4 @@
-from lmu.pyramid.chipcard.resources import root_factory
+from lmu.card.printer_webservice.resources import root_factory
 from lxml import etree
 from pyramid.view import view_config
 from spyne.application import Application

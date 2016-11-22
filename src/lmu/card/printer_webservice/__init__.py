@@ -1,5 +1,5 @@
-from lmu.pyramid.chipcard.resources import root_factory
-from lmu.pyramid.chipcard.soap import AnaUSOAPWebService
+from lmu.card.printer_webservice.resources import root_factory
+from lmu.card.printer_webservice.soap import AnaUSOAPWebService
 from pyramid.config import Configurator
 from pyramid.view import view_config
 from spyne.application import Application
