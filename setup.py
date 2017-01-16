@@ -40,9 +40,8 @@ setup(name='lmu.card.printer_webservice',
           'Spyne',
           'suds-py3',
           'lxml',
-          'ipython',
-          'ipdb',
           'requests',
+          'raven',
       ],
       extras_require={
           'test': [
@@ -51,8 +50,7 @@ setup(name='lmu.card.printer_webservice',
               'pytest-cov',
           ],
           'develop': [
-              'ipython',
-              'ipdb',
+              'pdbpp',
           ]
       },
       dependency_links=[
