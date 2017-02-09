@@ -233,19 +233,25 @@ class AnaUSOAPWebService(ServiceBase):
     def GetValidationData(CardIdentifier):
         date = datetime.date.today()
         data = {}
-        if CardIdentifier == "000000791428":
+        log.info('Request Validation for "%s" (%s)', CardIdentifier, type(CardIdentifier))
+        if CardIdentifier == "000000891860":
+            data = {
+                'valid': 'False',
+            }
+        elif CardIdentifier == "000000791428":
             date = datetime.date.today() + datetime.timedelta(days=365)
             data = {
                 'functions': 'TRUE',
-                'function_title': 'Studiengang, Fach/FS (FKZ/ETCS) / Study, Topic, ETCS',
-                'function1': 'LA Gymnasium (modul.) Deutsch / 13 (U105)',
-                'function2': 'Englisch / 13 (U/105)',
-                'function3': 'Erziehungswiss. Studium / 13 (P/36)',
-                'function4': 'Sozialkunde / 9 (E)',
-                'function5': '',
+                'function_title': 'Studiengang, Fach / Study, Topic',
+                'function1': 'LA Gymnasium (modul.): Deutsch, Englisch,',
+                'function2': 'Erziehungswiss. Studium, Sozialkunde',
+                'function3': '',
+                'function4': 'Demo 2. Studiengang: Mathematik, Informatik, ',
+                'function5': 'Computer Linguistik',
                 'semesterticket_valid': 'TRUE',
                 #'semesterticket_valid': 'FALSE',
-                'semesterticket_code': 'WS2016/17',
+                'semesterticket_code1': 'WiSe2016/17',
+                'semesterticket_code2': 'SoSe2017',
                 'TUM': 'False',
                 'valid': 'TRUE',
             }
@@ -261,13 +267,27 @@ class AnaUSOAPWebService(ServiceBase):
                 'function5': '+49 89 2180 9831',
                 #'semesterticket_valid': 'TRUE',
                 'semesterticket_valid': 'FALSE',
-                'semesterticket_code': 'WS2016/17',
+                'semesterticket_code1': 'WiSe2016/17',
+                'semesterticket_code2': 'SoSe2017',
                 'TUM': 'False',
                 'valid': 'TRUE',
             }
         else:
+            date = datetime.date(1970, 1, 1)
             data = {
-                'valid': 'FALSE',
+                'functions': 'TRUE',
+                'function_title': '',
+                'function1': '',
+                'function2': 'Demo Karte',
+                'function3': '          Demo Card',
+                'function4': '',
+                'function5': '',
+                'semesterticket_valid': 'TRUE',
+                #'semesterticket_valid': 'FALSE',
+                'semesterticket_code1': 'WiSe2016/17',
+                'semesterticket_code2': 'SoSe2017',
+                'TUM': 'False',
+                'valid': 'TRUE',
             }
 
         log.info('Validation data for "%s": %s', CardIdentifier, data)
